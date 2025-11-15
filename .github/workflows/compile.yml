@@ -33,13 +33,13 @@ jobs:
           python -m pip install charset_normalizer pyinstaller -r requirements.txt
           pyinstaller --onefile --clean --target-arch universal2 main.py
           chmod a+x ./dist/main
-          mv ./dist/main "./ESET-KeyGen_v${{ github.event.inputs.version }}_macos"
+          mv ./dist/main "./MyKeyGen_v${{ github.event.inputs.version }}_macos"
 
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos-artifact
-          path: ./ESET-KeyGen_v${{ github.event.inputs.version }}_macos
+          path: ./MyKeyGen_v${{ github.event.inputs.version }}_macos
 
   windows:
     runs-on: windows-latest
@@ -56,19 +56,19 @@ jobs:
         run: |
           mkdir legacy
           cd legacy
-          Invoke-WebRequest -Uri "https://github.com/rzc0d3r/ESET-KeyGen/releases/download/python380-portable-win32/python-v3.8.0-portable_win32.zip" -OutFile "python-portable.zip"
+          Invoke-WebRequest -Uri "https://github.com/VitalyDukshtein/MyKeyGen/releases/download/python380-portable-win32/python-v3.8.0-portable_win32.zip" -OutFile "python-portable.zip"
           Expand-Archive -Path "python-portable.zip" -DestinationPath .
           .\python.exe -m pip install --upgrade pip --no-warn-script-location
           .\python.exe -m pip install pyinstaller -r ../requirements.txt --no-warn-script-location
           Scripts\pyinstaller.exe --onefile --collect-data selenium_stealth --add-data ..\dll_patch\api-ms-win-core-path-blender\x86\api-ms-win-core-path-l1-1-0.dll:. ../main.py
-          Move-Item -Path .\dist\main.exe -Destination "../ESET-KeyGen_v${{ github.event.inputs.version }}_win32.exe"
+          Move-Item -Path .\dist\main.exe -Destination "../MyKeyGen_v${{ github.event.inputs.version }}_win32.exe"
 
       - name: Compile win64
         run: |
           pip install --upgrade pip
           pip install pyinstaller -r requirements.txt
           pyinstaller --onefile --collect-data selenium_stealth --add-data dll_patch\api-ms-win-core-path-blender\x64\api-ms-win-core-path-l1-1-0.dll:. main.py
-          Move-Item -Path .\dist\main.exe -Destination "ESET-KeyGen_v${{ github.event.inputs.version }}_win64.exe"
+          Move-Item -Path .\dist\main.exe -Destination "MyKeyGen_v${{ github.event.inputs.version }}_win64.exe"
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
